@@ -6,27 +6,28 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import AppState from './plugins/appState.js';
 import PrimeVue from 'primevue/config'
-import Noir from './presets/Noir.js'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import Chip from 'primevue/chip'
 import Divider from 'primevue/divider'
 import ProgressBar from 'primevue/progressbar'
 import Avatar from 'primevue/avatar'
+import Aura from '@primeuix/themes/aura';
 
 
 const app = createApp(App)
 
 app.use(PrimeVue, {
+    // Default theme configuration
     theme: {
-        preset: Noir,
+        preset: Aura,
         options: {
             prefix: 'p',
-            darkModeSelector: '.p-dark',
-            cssLayer: false,
+            darkModeSelector: 'system',
+            cssLayer: false
         }
     }
-});
+ });
 app.use(AppState)
 app.component('Button', Button)
 app.component('Card', Card)
