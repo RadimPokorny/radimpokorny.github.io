@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { Projects } from './projects/Projects'
 
 const primaryColor = 'text-green-500' // Hlavní barva theme
 const primaryBgColor = 'bg-green-500' // Pro tlačítka atd.
@@ -48,6 +49,56 @@ const socials = ref([
   { icon: 'pi-linkedin', color: 'text-blue-600', link: 'https://www.linkedin.com/in/radim-pokorn%C3%BD-46baa3354/' },
   { icon: 'pi-facebook', color: 'text-blue-600', link: 'https://www.facebook.com/radim.pokorny.737/' },
   { icon: 'pi-instagram', color: 'text-pink-500', link: 'https://www.instagram.com/radimgoes/' }
+]);
+
+interface Project {
+    id: string;
+    name: string;
+    description: string;
+    image: string;
+    inventoryStatus: string;
+    link: string;
+    isFavorite: boolean;
+}
+
+const projects = ref<Project[]>();
+
+onMounted(() => {
+    Projects.getProjects().then((data: any) => {
+        projects.value = data.slice(0, 9).map((project: any) => ({
+            ...project,
+            isFavorite: false // Initialize favorite state for each project
+        }));
+    });
+});
+
+const isFavorite = ref(false);
+
+function toggleFavorite(project: any) {
+    project.isFavorite = !project.isFavorite;
+}
+
+const responsiveOptions = ref([
+    {
+        breakpoint: '1400px',
+        numVisible: 1,
+        numScroll: 1
+    },
+    {
+        breakpoint: '1199px',
+        numVisible: 1,
+        numScroll: 1
+    },
+    {
+        breakpoint: '767px',
+        numVisible: 1,
+        numScroll: 1
+    },
+    {
+        breakpoint: '575px',
+        numVisible: 1,
+        numScroll: 1
+    }
 ]);
 
 const openLink = (url: string) => {
@@ -110,6 +161,37 @@ const openLink = (url: string) => {
           </Card>
 
           <!-- Interests Section -->
+          <Card>
+            <template #title>
+              <div class="text-xl font-semibold text-center">Projects</div>
+              <Carousel :value="projects" :numVisible="1" :numScroll="1" :responsiveOptions="responsiveOptions">
+            <template #item="slotProps">
+                <div class="rounded m-2 p-4">
+                    <div class="mb-4">
+                        <div class="relative mx-auto">
+                            <img :src="'' + slotProps.data.image" :alt="slotProps.data.name" class="w-full rounded" />
+                            <Tag :value="slotProps.data.inventoryStatus" class="absolute" style="left:5px; top: 5px"/>
+                        </div>
+                    </div>
+                    <div class="mb-4 font-medium">{{ slotProps.data.name }}</div>
+                    <div class="flex justify-between items-center">
+                        <div class="mt-0 text-sm">{{ slotProps.data.description }}</div>
+                        <span>
+                          <Button
+                            :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                            severity="secondary"
+                            outlined
+                            @click="toggleFavorite(slotProps.data)"
+                          />
+                          <Button icon="pi pi-external-link" label="Visit" class="ml-2" @click="openLink(slotProps.data.link)"/>
+                        </span>
+                    </div>
+                </div>
+            </template>
+        </Carousel>
+            </template>
+            
+          </Card>
           <Card>
             <template #title>
               <div class="text-xl font-semibold ">My Interests</div>

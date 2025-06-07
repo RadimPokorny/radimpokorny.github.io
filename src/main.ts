@@ -13,6 +13,8 @@ import Divider from 'primevue/divider'
 import ProgressBar from 'primevue/progressbar'
 import Avatar from 'primevue/avatar'
 import Aura from '@primeuix/themes/aura';
+import Carousel from 'primevue/carousel';
+
 
 
 const app = createApp(App)
@@ -35,4 +37,5 @@ app.component('Chip', Chip)
 app.component('Divider', Divider)
 app.component('ProgressBar', ProgressBar)
 app.component('Avatar', Avatar)
+app.component('Carousel', Carousel)
 app.mount('#app')
