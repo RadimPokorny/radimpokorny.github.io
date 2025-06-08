@@ -72,9 +72,7 @@ onMounted(() => {
     });
 });
 
-const isFavorite = ref(false);
-
-function toggleFavorite(project: any) {
+function toggleFavorite(project: Project) {
     project.isFavorite = !project.isFavorite;
 }
 
@@ -178,7 +176,7 @@ const openLink = (url: string) => {
                         <div class="mt-0 text-sm">{{ slotProps.data.description }}</div>
                         <span>
                           <Button
-                            :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                            :icon="slotProps.data.isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
                             severity="secondary"
                             outlined
                             @click="toggleFavorite(slotProps.data)"
